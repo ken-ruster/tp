@@ -1,5 +1,8 @@
 package chessmaster.parser;
 
+import chessmaster.Command.Command;
+import chessmaster.Command.ExitCommand;
+import chessmaster.Command.MoveCommand;
 import chessmaster.exceptions.ParseCoordinateException;
 import chessmaster.game.ChessBoard;
 import chessmaster.game.Coordinate;
@@ -12,29 +15,54 @@ import chessmaster.pieces.Pawn;
 import chessmaster.pieces.ChessPiece;
 import chessmaster.game.Move;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
 public class Parser {
+    /**
+     * Parses user's input and returns a command to be executed.
+     *
+     * @param in User's typer input.
+     * @param board The ChessBoard the command is to be executed on.
+     * @return A Command based on the user's input.
+     */
+    public Command parseUserInput(String in, ChessBoard board) {
+        String commandWord = in.split(" ")[0];
+        switch(commandWord){
+            case ExitCommand.commandString:
+                return new ExitCommand(board);
+            default:
+                try {
+                    Move move = parseMove(in, board);
+                    return new MoveCommand(board, move);
+                } catch (ParseCoordinateException e) {
+                    //TODO: Error handling
+                }
+            }
+    }
+
     /**
      * Parses an input string and returns the move indicated by the string.
      * Used to read user inputs during the chess game.
+     * Throws an error if the format is not recognised, i.e. the user did not enter
+     * a valid command
      *
-     * @param in
-     * @param board
-     * @return
+     * @param in Input string containing the intended move.
+     * @param board The ChessBoard the piece is located on.
+     * @return A Move object containing information about the move the user
+     *         intended to make, containing the start and end coordinates, as
+     *         well as the piece being moved.
      */
-    public Move parseMove(String in, ChessBoard board) {
+    public Move parseMove(String in, ChessBoard board) throws ParseCoordinateException {
+        /*
+        //Need to implement functional interface which throws exception or this will not work
         List<Coordinate> moveArray = Arrays.stream(in.split(" "))
-                .map(coord -> {
-                    try {
-                        return Coordinate.parseAlgebraicCoor(coord);
-                    } catch (ParseCoordinateException e) {
-                        throw new RuntimeException(e);
-                    }
-                }).collect(Collectors.toList());
-        return new Move(moveArray.get(0), moveArray.get(1), board);
+                .map(Coordinate::parseAlgebraicCoor).collect(Collectors.toList());
+         */
+        Coordinate[] moveArray = new Coordinate[2];
+        String[] coordArray = in.split(" ");
+        for(int i = 0; i < 2; i += 1){
+            moveArray[i] = Coordinate.parseAlgebraicCoor(coordArray[i]);
+        }
+
+        return new Move(moveArray[0], moveArray[1], board);
     }
     /**
      * Parses an input string and creates a ChessPiece object at the specified row

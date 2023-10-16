@@ -76,4 +76,5 @@ public class TextUI {
         out.println("");
     }
 
+    //TODO: Add function to show messages returned from Command
 }
