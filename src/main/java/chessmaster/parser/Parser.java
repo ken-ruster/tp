@@ -24,7 +24,7 @@ public class Parser {
      * @return A Command based on the user's input.
      */
     public Command parseUserInput(String in, ChessBoard board) {
-        String commandWord = in.split(" ")[0];
+        String commandWord = in.split(" ")[0].toLowerCase();
         switch(commandWord){
             case ExitCommand.commandString:
                 return new ExitCommand(board);

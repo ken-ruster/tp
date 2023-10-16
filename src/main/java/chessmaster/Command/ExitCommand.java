@@ -3,7 +3,7 @@ package chessmaster.Command;
 import chessmaster.game.ChessBoard;
 
 public class ExitCommand extends Command{
-    public final static String commandString = "Are you sure you want to exit the program? y/n";
+    public final static String commandString = "exit";
 
     public ExitCommand(ChessBoard board) {
         super(board);
