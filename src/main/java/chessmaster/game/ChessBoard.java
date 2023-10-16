@@ -1,24 +1,24 @@
 package chessmaster.game;
 
+import chessmaster.exceptions.InvalidMoveException;
 import chessmaster.parser.Parser;
 import chessmaster.parser.MoveValidator;
 import chessmaster.pieces.ChessPiece;
 import chessmaster.ui.TextUI;
-
 
 public class ChessBoard {
 
     public static final int SIZE = 8;
 
     private static final String[][] STARTING_CHESSBOARD_STRING = {
-            {"r", "n", "b", "q", "k", "b", "n", "r"},
-            {"p", "p", "p", "p", "p", "p", "p", "p"},
-            {"", "", "", "", "", "", "", ""},
-            {"", "", "", "", "", "", "", ""},
-            {"", "", "", "", "", "", "", ""},
-            {"", "", "", "", "", "", "", ""},
-            {"P", "P", "P", "P", "P", "P", "P", "P"},
-            {"R", "N", "B", "Q", "K", "B", "N", "R"},
+            { "r", "n", "b", "q", "k", "b", "n", "r" },
+            { "p", "p", "p", "p", "p", "p", "p", "p" },
+            { "", "", "", "", "", "", "", "" },
+            { "", "", "", "", "", "", "", "" },
+            { "", "", "", "", "", "", "", "" },
+            { "", "", "", "", "", "", "", "" },
+            { "P", "P", "P", "P", "P", "P", "P", "P" },
+            { "R", "N", "B", "Q", "K", "B", "N", "R" },
     };
 
     private ChessTile[][] board = new ChessTile[SIZE][SIZE];
@@ -49,35 +49,9 @@ public class ChessBoard {
         }
     }
 
-    public ChessPiece getPieceAtCoor(Coordinate coor) {
+    public ChessPiece getPieceAtCoor (Coordinate coor) {
         ChessTile tile = board[coor.getX()][coor.getY()];
 
         return tile.getChessPiece();
     }
-
-
-    public void executeMove(Move move) {
-        Coordinate from = move.getFrom();
-        Coordinate to = move.getTo();
-        ChessPiece piece = move.getPiece();
-
-        if (piece != null) {
-            if (MoveValidator.isValidMove(from, to)) {
-                // Piece at new position
-                board[to.getX()][to.getY()] = new ChessTile(piece);
-                // Null piece in original position
-                board[from.getX()][from.getY()] = new ChessTile();
-
-                // Add the move to the move history
-                //moveHistory.add(move);
-            } else {
-                // Edit to throw exception
-                System.out.println("Move is invalid. Try again.");
-            }
-        } else {
-            // Edit to throw exception
-            System.out.println("No piece at original coordinates.");
-        }
-    }
-
 }
