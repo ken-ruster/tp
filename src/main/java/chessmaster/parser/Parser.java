@@ -36,6 +36,8 @@ public class Parser {
                     //TODO: Error handling
                 }
             }
+
+            return null;
     }
 
     /**
