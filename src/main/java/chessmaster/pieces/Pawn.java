@@ -14,7 +14,7 @@ public class Pawn extends ChessPiece {
     };
     protected boolean enPassed = false;
 
-    private int[][] DIRECTIONS;
+    private int[][] directions;
     private int checkBlockDir;
 
 
@@ -28,20 +28,20 @@ public class Pawn extends ChessPiece {
 
         
         if (this.color == ChessPiece.WHITE){
-            DIRECTIONS = DIRECTIONSDOWN;
+            directions = DIRECTIONSDOWN;
             checkBlockDir = -1;
         } else {
-            DIRECTIONS = DIRECTIONSUP;
+            directions = DIRECTIONSUP;
             checkBlockDir = 1;
         } 
 
-        Coordinate[][] result = new Coordinate[DIRECTIONS.length][0];
+        Coordinate[][] result = new Coordinate[directions.length][0];
 
         
 
-        for (int dir = 0; dir < DIRECTIONS.length; dir++) {
-            int offsetX = DIRECTIONS[dir][0];
-            int offsetY = DIRECTIONS[dir][1];
+        for (int dir = 0; dir < directions.length; dir++) {
+            int offsetX = directions[dir][0];
+            int offsetY = directions[dir][1];
 
             switch (dir){
             case 0:

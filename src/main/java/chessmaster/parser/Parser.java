@@ -29,21 +29,21 @@ public class Parser {
      * @param promoteTo   String representing the type of piece to be promoted to.
      * @return Promoted chess piece.
      */
-    public ChessPiece parsePromote(ChessPiece promoteFrom, String promoteTo) {
+    public static ChessPiece parsePromote(ChessPiece promoteFrom, String promoteTo) {
         int colour = promoteFrom.getColour();
         Coordinate position = promoteFrom.getPosition();
 
         switch (promoteTo.toLowerCase()){
-        case Bishop.BISHOP_BLACK:
-            return new Bishop(position.getX(), position.getY(), colour);
-        case Queen.QUEEN_BLACK:
-            return new Queen(position.getX(), position.getY(), colour);
-        case Knight.KNIGHT_BLACK:
-            return new Knight(position.getX(), position.getY(), colour);
-        case Rook.ROOK_BLACK:
-            return new Rook(position.getX(), position.getY(), colour);
+        case Bishop.BISHOP_WHITE:
+            return new Bishop(position.getY(), position.getX(), colour);
+        case Queen.QUEEN_WHITE:
+            return new Queen(position.getY(), position.getX(), colour);
+        case Knight.KNIGHT_WHITE:
+            return new Knight(position.getY(), position.getX(), colour);
+        case Rook.ROOK_WHITE:
+            return new Rook(position.getY(), position.getX(), colour);
         default:
-            return null;
+            return promoteFrom;
         }
     }
 
