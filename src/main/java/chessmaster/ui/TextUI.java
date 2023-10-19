@@ -62,6 +62,10 @@ public class TextUI {
         out.println(message);
     }
 
+    public void printPromoteInvalidMessage(){
+        out.println(UiMessages.PROMPT_PROMOTE_INVALID_MESSAGE);
+    }
+
     public void printChessBoardDivider() {
         out.println(CHESS_BOARD_DIVIDER);
     }

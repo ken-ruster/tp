@@ -1,7 +1,6 @@
 package chessmaster;
 
 import chessmaster.exceptions.ChessMasterException;
-import chessmaster.exceptions.PromoteException;
 import chessmaster.game.ChessBoard;
 import chessmaster.game.ChessTile;
 import chessmaster.game.Coordinate;
@@ -67,24 +66,30 @@ public class ChessMaster {
         }
     }
 
-    private static void promote(ChessBoard board, ChessPiece promoteFrom, TextUI ui) throws PromoteException {
+    /**
+     * Prompts the user to enter a type of piece to promote a pawn to. If the promotion is not successful,
+     * the user is prompted again. If successful, the pawn is replaced with the new piece.
+     *
+     * @param board Chessboard that the game is being played on.
+     * @param promoteFrom The piece being promoted.
+     * @param ui User interface currently being displayed.
+     */
+    private static void promote(ChessBoard board, ChessPiece promoteFrom, TextUI ui) {
         board.showChessBoard(ui);
         Coordinate coord = promoteFrom.getPosition();
-        ChessPiece promoteTo = promoteFrom;
         boolean promoteFailure = true;
 
         do {
             ui.printPromotePrompt(coord);
             String in = ui.getUserInput();
-            try {
-                promoteTo = Parser.parsePromote(promoteFrom, in);
-                ChessTile promoted = new ChessTile(promoteTo);
-                board.setTile(coord.getY(), coord.getX(), promoted);
-            } catch (Exception e) {
-                throw new PromoteException();
-            }
+           ChessPiece promoteTo = Parser.parsePromote(promoteFrom, in);
+            ChessTile promoted = new ChessTile(promoteTo);
+            board.setTile(coord.getY(), coord.getX(), promoted);
 
             promoteFailure = promoteTo.toString().equalsIgnoreCase(Pawn.PAWN_WHITE);
+            if(promoteFailure){
+                ui.printPromoteInvalidMessage();
+            }
         } while(promoteFailure);
     }
 
