@@ -40,9 +40,8 @@ Our application also uses other classes to store information about the chess gam
 
 ### ChessMaster component
 
-<!-- Here is a partial class diagram of ChessMaster.  -->
-
-The sequence diagram below illustrates the interactions within the ChessMaster component, when they launch the program. 
+The sequence diagram below illustrates the interactions within the ChessMaster component, when they launch the program.
+The user has the option to terminate the game anytime during this interaction with `exit`, however, this event is not depicted in the diagram for simplicity.
 
 ![](images/ChessMasterSequence.png)
 
@@ -50,17 +49,17 @@ How does ChessMaster component work:
 
 1. Attempts to load previously stored game in storage
 2. If previous game exists, asks the user if a new game or the previous game should be loaded. 
-3. If a new game is selected, the user will be prompted for the color to start. 
-4. Start running the new or previous game instance. 
+3. If a new game is selected, the user will be prompted for the color and difficulty to start. 
+4. Start running the new or previous game instance.
 
 ### Game component
 
-The sequence diagram below illustrates the interactions within the Game component, taking a move of "a2 a3" as example.
+The sequence diagram below illustrates the interactions within the Game component.
 
 ![](images/GameSequence.png)
 
 How does the Game component work:
-1. Solicits input from user. Users can provide game commands, if not recognised, it will parsed as a `MoveCommand`.
+1. Solicits input from user. Users can provide game commands, if not recognised, it will parse as a `MoveCommand`.
 2. The returned command will be executed.
 3. If user entered a game command (not MoveCommand), the next user input will be solicited.
 4. If a MoveCommand is identified, the user's input will be parsed as a Move object with checks to ensure it is a valid move on the chessboard.
@@ -70,6 +69,7 @@ How does the Game component work:
 
 ### User input handling
 Below is a class diagram representing the Command and Parser classes.
+
 ![](images/ParserCommandDiagram.png)
 
 In order to handle user input into the program during the game, the `Parser` class was implemented.
@@ -118,8 +118,11 @@ How the minimax algorithm works:
 5. The `getBestMove` method returns the best move for the CPU to make.
 
 ### Move types
-The Move class and its subclasses are responsible for handling the different types of moves in chess. The Move class is an abstract class that is extended by the following subclasses: StandardMove, PawnOpening, CastleMove, EnPassantMove and PromotionMove. The Move class is also extended by the following classes: CastleSide, Direction, MoveDirection, MoveType and PromotionPiece.
+The Move class and its subclasses are responsible for handling the different types of moves in chess. 
+The Move class is an abstract class that is extended by the following subclasses: StandardMove, PawnOpening, CastleMove, EnPassantMove and PromotionMove. 
+The Move class is also extended by the following classes: CastleSide, Direction, MoveDirection, MoveType and PromotionPiece.
 Below is a class diagram representing the Move class.
+
 ![](images/MoveClass.png)
 
 #### Standard moves
@@ -132,6 +135,9 @@ How standard moves are generated:
 4. Any chess piece that "blocks" the path of the chess piece is checked for colour. If the chess piece is of the same colour, the chess piece cannot move past it. If the chess piece is of the opposite colour, the chess piece can capture it. For example, a rook can capture an enemy chess piece in the up, down, left and right directions. (Note that pawn moves are an exception to this rule. Pawn pieces can only capture enemy chess pieces in the forward diagonal directions.)
 5. Special cases such as castling, en passant and promotion are also encoded as `directions` and executed separately with different move functions.
 
+Below is a sequence diagram representing the process of generating and executing moves.
+
+![](images/MoveSequence.png)
 
 #### Pawn Opening
 A pawn opening is a special type of move that involves moving a pawn from its starting position to another tile two spaces ahead. This move is only valid if the pawn is in its starting position and the tile it is moving to as well as the tile in between is empty. 
@@ -146,27 +152,36 @@ En passant is a special type of move that involves capturing a pawn that has jus
 Promotion is a special type of move that involves promoting a pawn to another piece. This move is only valid if the pawn is in the correct position, which is at the other end of the board from which it starts. This information is implemented in the Pawn class and executed with the PromotionMove class.
 
 
-
 ### Storage Component
-**API:**
-
 Below is a class diagram representing the Storage class.
 The Storage component is responsible for handling the storage and retrieval of chess game state.
+
 ![](images/StorageClass.png)
+
+Below is a sequence diagram of the storage class.
+It includes only the more essential methods (createChessmasterFile, saveBoard, loadBoard, resetBoard) required for the main storing and loading of information, to prevent the diagram from being too complex.
 
 ![](images/StorageSequence.png)
 
-* Creates the necessary parent directories for the file and the file itself if they don't exist 
-* Saves the current state of the ChessBoard to the file. It includes the player's color information and current player's turn as the first line and the state of the chessboard in an 8x8 format.
-* Allows resetting the game by clearing the contents of the file.
-* Loads the state of the chessboard from the file by constructing a 2D array of ChessTile objects.
+Here is a brief overview of how the storage handles the data storage:
+1. For the storing of information, it creates the necessary parent directories for the file and the file itself if they don't exist
+2. In the text file, the following contents are stored in order, each taking up a line:
+   1. Player's color information 
+   2. Game difficulty
+   3. Color of the next player (the color to be played upon the loading of game)
+   4. Human player's past moves in the form of comma-separated string
+   5. CPU's past moves in the form of comma-separated string 
+   6. State of the chessboard in an 8x8 format, taking up 8 lines.
+3. For the loading of information the above saved information are loaded (Player's color, game difficulty, next turn's color, player's moves, CPU's moves and board state)
+4. To ensure data is not corrupted, the executeSavedMoves method parses the saved player's moves and CPU's moves to check against the saved board state 
+5. Other features include resetting the game by clearing the contents of the file.
 
 
 ## Product scope
 ### Target user profile
-
 1. Novice players trying to practice chess and play chess offline without a chess set. 
 2. Time-poor users looking for a very simple, clean, gimmick-free chess application.
+
 ### Value proposition
 - Chess novices can use ChessMaster CLI to learn the game's rules and practice their skills.
 - Busy students can open the application up in their terminal easily for a quick game of chess.
@@ -187,8 +202,9 @@ The Storage component is responsible for handling the storage and retrieval of c
 | v1.0    | player     | save and get back to a game                            | leave when I am busy and resume a game when I am free  |
 | v2.0    | new player | see available moves for a piece                        | learn the rules of chess and valid moves               |
 | v2.0    | new player | refresh the rules of chess anytime                     | recap and learn the rules of chess                     |
+| v2.0    | player     | see past move history                                  | recap through the gameplay                             |
+| v2.0    | player     | see captured pieces                                    | gauge the state of the game                            |
 
-{more to be added}
 
 ## Non-functional requirements
 

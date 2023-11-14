@@ -4,8 +4,8 @@ hide circle
 skinparam classAttributeIconSize 0
 package command{
     abstract class Command {
-    +execute()
-    +isMoveCommand()
+    +execute(game: Game)
+    +isMoveCommand(): boolean
     }
     class MoveCommand {
     -userInput: String

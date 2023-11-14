@@ -110,4 +110,8 @@ public abstract class Player {
     public ArrayList<ChessPiece> getPieces() {
         return this.pieces;
     }
+
+    public int getMovesLength() {
+        return this.moves.size();
+    }
 }

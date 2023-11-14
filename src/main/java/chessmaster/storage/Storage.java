@@ -25,6 +25,7 @@ public class Storage {
     //@@author ken_ruster
     private static final String LOAD_BOARD_MISMATCH_STRING =
             "Board state does not match state dictated by move history!";
+    private static final String PATH_EMPTY_STRING = "File path cannot be empty or null";
     //@@author TriciaBK
     private String filePathString;
     private File storageFile;
@@ -38,7 +39,7 @@ public class Storage {
     public Storage(String filePath) {
         filePathString = filePath;
         storageFile = new File(filePath);
-        assert !filePathString.isEmpty() && filePath != null : "File path cannot be empty or null";
+        assert !filePathString.isEmpty() && filePath != null : PATH_EMPTY_STRING;
     }
 
     //@@author TongZhengHong
@@ -214,6 +215,7 @@ public class Storage {
         return boardTiles;
     }
 
+    //@@author ken-ruster
     /**
      * Executes moves saved in the txt file so that it can be checked against the save board state.
      * Also stores the saved move history of both the human and CPU.
@@ -224,11 +226,12 @@ public class Storage {
      * @param cpu Object representing information about the computer-controlled player
      * @throws ChessMasterException
      */
-    public void executeSavedMoves(Color playerColor,
+    public ChessBoard executeSavedMoves(Color playerColor,
                                   ChessBoard otherBoard,
+                                  ChessBoard board,
                                   Human human,
                                   CPU cpu) throws ChessMasterException {
-        ArrayList<String> moveStringList = new ArrayList<String>();
+        ArrayList<String> moveStringList = new ArrayList();
         ArrayList<String> humanMoves = loadHumanMoves();
         ArrayList<String> cpuMoves = loadCPUMoves();
 
@@ -252,8 +255,6 @@ public class Storage {
         } else {
             throw new LoadBoardException();
         }
-
-        ChessBoard board = new ChessBoard(playerColor);
 
         //Execute move string Array
         board.executeMoveArray(moveStringList, human, cpu);
@@ -280,6 +281,8 @@ public class Storage {
         if (!board.equals(otherBoard)) {
             throw new LoadBoardException(LOAD_BOARD_MISMATCH_STRING);
         }
+
+        return board;
     }
 
 
@@ -425,6 +428,7 @@ public class Storage {
         return this.filePathString;
     }
 
+    //@@author ken-ruster
     /**
      * Loads the history of moves made by the human player in the saved game.
      * Parses the moves into Move objects, and returns a null array if no moves were found.

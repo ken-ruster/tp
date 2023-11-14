@@ -7,9 +7,14 @@ class Move {
   - to: Coordinate
   - pieceMoved: ChessPiece
   - pieceCaptured: ChessPiece
+
+  + getFrom(): Coordinate
+  + getTo(): Coordinate
   + getPieceMoved(): ChessPiece
   + hasCapturedAPiece(): boolean
   + getPieceCaptured(): ChessPiece
   + isValidWithCheck(board: ChessBoard): boolean
+  + isSkippingPawn(): boolean
+  + toString(): String
 }
 @enduml

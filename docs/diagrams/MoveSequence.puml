@@ -1,0 +1,52 @@
+@startuml MoveSequence
+
+actor User as user #BlanchedAlmond
+participant ":Game" as g #LightGreen
+participant ":UI" as ui #LightBlue
+participant ":MoveCommand" as mc #LightCoral
+participant ":MoveFactory" as mf #IndianRed
+participant ":ChessBoard" as cb #LightPink
+
+user --> ui : move coordinates :String
+activate ui
+ui --> g : move coordinates :String
+deactivate ui
+activate g
+create mc
+g --> mc : inputString :String
+activate mc
+g -> mc : execute()
+mc --> g : move :Move
+deactivate mc
+destroy mc
+g -> cb : move :Move
+deactivate g
+activate cb
+cb -> cb : isValidMove()
+cb --> cb : :boolean
+alt Move is valid
+    create mf
+    cb -> mf : createMove()
+    deactivate cb
+    activate mf
+    mf --> cb : move :Move
+    deactivate mf
+    destroy mf
+    activate cb
+    cb -> cb : executeMove()
+    cb --> g : board :ChessBoard
+    activate g
+    g -> ui : printChessBoardWithMove()
+    deactivate g
+    activate ui
+    ui --> user
+    deactivate ui
+else Move is invalid
+    cb -> ui : :InvalidMoveException
+    deactivate cb
+    activate ui
+    ui --> user
+    deactivate ui
+end
+
+@enduml

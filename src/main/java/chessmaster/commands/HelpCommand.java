@@ -23,6 +23,7 @@ public class HelpCommand extends Command {
         "stepback\tView the board as it was a certain number of moves ago",
         "\t\tFormat: stepback [number of moves to step back]",
         "\t\te.g. stepback 4",
+        "captured\tSee which Player and CPU pieces have been captured so far",
         "exit\t\tExit game",
     };
 

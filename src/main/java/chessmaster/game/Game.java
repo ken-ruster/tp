@@ -46,7 +46,7 @@ public class Game {
         Color cpuColor = playerColour.getOppositeColour();
         this.cpu = cpu;
 
-        this.numMoves = 0;
+        this.numMoves = human.getMovesLength() + cpu.getMovesLength();
 
         // Choose which player goes first
         currentPlayer = currentTurnColor == playerColour ? human : cpu;

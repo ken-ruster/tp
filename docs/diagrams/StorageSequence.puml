@@ -1,15 +1,15 @@
 @startuml
 
-actor User
-participant ":Storage" as Storage
-participant ":File" as File
-participant ":FileWriter" as FileWriter
-participant ":Scanner" as Scanner
-participant ":ChessTile" as ChessTile
-participant ":String" as String
-participant "human:Human" as Human
-participant "cpu:CPU" as CPU
-participant "board:ChessBoard" as ChessBoard
+actor User #BlanchedAlmond
+participant ":Storage" as Storage #DeepSkyBlue
+participant ":File" as File #Orange
+participant ":FileWriter" as FileWriter #PaleTurquoise
+participant ":Scanner" as Scanner #Pink
+participant ":ChessTile" as ChessTile #Orchid
+participant ":String" as String #IndianRed
+participant "human:Human" as Human #Lime
+participant "cpu:CPU" as CPU #LightGreen
+participant "board:ChessBoard" as ChessBoard  #LightPink
 
 
 create Storage

@@ -1,13 +1,13 @@
 @startuml
 'https://plantuml.com/sequence-diagram
 
-participant ":Game" as Game
-participant ":Parser" as Parser
-participant ":Command" as Command
-participant ":CommandResult" as CommandResult
-participant "coord :Coordinate" as Coordinate
-participant "board :ChessBoard" as ChessBoard
-participant "promoteFrom :ChessPiece" as ChessPiece
+participant ":Game" as Game #Pink
+participant ":Parser" as Parser #SkyBlue
+participant ":Command" as Command #IndianRed
+participant ":CommandResult" as CommandResult #LimeGreen
+participant "coord :Coordinate" as Coordinate #LightPink
+participant "board :ChessBoard" as ChessBoard #Turquoise
+participant "promoteFrom :ChessPiece" as ChessPiece #Orchid
 
 Game -> Parser: parseCommand()
 activate Parser

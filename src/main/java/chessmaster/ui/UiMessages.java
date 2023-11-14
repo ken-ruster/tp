@@ -17,7 +17,7 @@ public class UiMessages {
         "Invalid input! Please enter either 'y' for yes or 'n' for no: ";
     public static final String CONTINUE_PREV_GAME_MESSAGE = "Great! Continuing previous game as %s at difficulty %d";
 
-    public static final String CHOOSE_PLAYER_COLOR_MESSAGE = "Choose your starting color to start new game! [b/w] ";
+    public static final String CHOOSE_PLAYER_COLOR_MESSAGE = "Choose your starting color to start new game! [b/w/exit]";
     public static final String CHOOSE_PLAYER_COLOR_ERROR_MESSAGE = 
         "Invalid input! Please enter either 'b' for Black or 'w' for White: ";
     public static final String START_NEW_GAME_MESSAGE = "Great! Starting new game as %s";
@@ -33,7 +33,7 @@ public class UiMessages {
         "Invalid piece! Enter b(Bishop), q(Queen), r(Rook) or n(Knight): ";
     
     public static final String CHOOSE_DIFFICULTY_MESSAGE = 
-        "Choose difficulty level [1/2/3]: ";
+        "Choose difficulty level [1/2/3/exit]: ";
     public static final String CHOOSE_DIFFICULTY_ERROR_MESSAGE =
         "Invalid input! Please enter either '1', '2' or '3': ";
 

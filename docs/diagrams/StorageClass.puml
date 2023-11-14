@@ -3,14 +3,29 @@ hide circle
 skinparam classAttributeIconSize 0
 class Storage {
   - filePathString: String
+  - storageFile: File
+  - blackPieceNum: int
+  - whitePieceNum: int
+  - blackKingPresent: boolean
+  - whiteKingPresent: boolean
+  - fileScanner: Scanner
+  - lastMove: Coordinate
 
   + Storage(filePath: String)
-  + saveBoard(board: ChessBoard, playerColor: Color): void
+  + saveBoard(board: ChessBoard, currentColor: Color, human: Human, cpu: CPU): void
   + resetBoard(): void
   + loadBoard(): ChessTile[][]
+  + executeSavedMoves(playerColor: Color, otherBoard: ChessBoard, human: Human, cpu: CPU): void
   + loadPlayerColor(): Color
+  + loadDifficulty(): int
+  + loadCurrentColor(): Color
+  + getFilePath(): String
+  + loadHumanMoves(): ArrayList<String>
+  + loadCPUMoves(): ArrayList<String>
 
+  - isPieceValid(initialPiece: ChessPiece): Boolean
   - createChessMasterFile(): void
+
 }
 
 class ChessBoard {
@@ -21,8 +36,24 @@ class ChessTile
 
 class Color
 
-Storage --|> File
+class Coordinate
+
+class Parser
+
+class ChessPiece
+
+class Human
+
+class CPU
+
 Storage --|> ChessBoard
 Storage --|> ChessTile
 Storage --|> Color
+Storage --|> Coordinate
+Storage --|> Parser
+Storage --|> ChessPiece
+Storage --|> Human
+Storage --|> CPU
+
 @enduml
+

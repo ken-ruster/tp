@@ -26,7 +26,10 @@ public class ChessBoard {
     public static final int BOTTOM_ROW_INDEX = 7;
     public static final int MAX_PIECES = 16;
     public static final String PROMOTE_MOVE_STRING = "p";
-
+    public static final String INVALID_SAVE_STRING =
+            "Invalid move found in save file! Please start a new game or correct the invalid move!";
+    public static final String INVALID_PROMOTE_STRING =
+            "Invalid promotion found in save file! Please start a new game or correct the invalid move!";
     private static final String[][] STARTING_CHESSBOARD_BLACK = { 
         { "r", "n", "b", "q", "k", "b", "n", "r" }, 
         { "p", "p", "p", "p", "p", "p", "p", "p" }, 
@@ -156,7 +159,36 @@ public class ChessBoard {
 
     public boolean isCheckmated(Color color) {
         Move[] moves = getLegalMoves(color);
+        ChessPiece[] playerPieces = getAllPieces(color);
+        ChessPiece[] opponentPieces = getAllPieces(color.getOppositeColour());
+        if (playerPieces.length == 1 && opponentPieces.length == 1) {
+            return true;
+        }
         return moves.length == 0;
+    }
+
+    public ChessPiece[] getAllPieces(Color color) {
+        ArrayList<ChessPiece> pieces = new ArrayList<ChessPiece>();
+        for (int row = 0; row < ChessBoard.SIZE; row++) {
+            for (int col = 0; col < ChessBoard.SIZE; col++) {
+                Coordinate coor = new Coordinate(col, row);
+                ChessPiece piece = getPieceAtCoor(coor);
+                if (piece.isSameColorAs(color)) {
+                    pieces.add(piece);
+                }
+            }
+        }
+        return pieces.toArray(new ChessPiece[0]);
+    }
+
+    public boolean isKingAlive(Color color) {
+        ChessPiece[] pieces = getAllPieces(color);
+        for (ChessPiece piece : pieces) {
+            if (piece instanceof King) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -391,7 +423,10 @@ public class ChessBoard {
     }
 
     //@@author onx001
-    public boolean isEndGame() {
+    public boolean isEndGame() throws ChessMasterException {
+        if (!isKingAlive(playerColor) || !isKingAlive(playerColor.getOppositeColour())) {
+            throw new ChessMasterException("King is dead!");
+        }
         return isCheckmated(playerColor) || isCheckmated(playerColor.getOppositeColour());
     }
 
@@ -489,7 +524,9 @@ public class ChessBoard {
 
             if (!isPromote) {
                 Move toExecute = Parser.parseMove(move, this, false);
-                assert toExecute.isValid(this) : "Move in file is not valid!";
+                if (!toExecute.isValid(this)) {
+                    throw new InvalidMoveException(INVALID_SAVE_STRING);
+                }
                 this.executeMove(toExecute);
 
                 if (isPlayersTurn) {
@@ -500,9 +537,10 @@ public class ChessBoard {
             } else {
                 Coordinate coord = Coordinate.parseAlgebraicCoor(moveCommandArray[1]);
                 ChessPiece oldPiece = this.getPieceAtCoor(coord);
-                assert this.canPromote(new Move(coord, coord, oldPiece))
-                        : "Move in file tries to make an invalid promotion!";
                 assert oldPiece instanceof Pawn;
+                if (!this.canPromote(new Move(coord, coord, oldPiece))) {
+                    throw new InvalidMoveException(INVALID_PROMOTE_STRING);
+                }
                 ChessPiece newPiece = Parser.parsePromote(oldPiece, moveCommandArray[2]);
                 this.setPromotionPiece(coord, newPiece);
 

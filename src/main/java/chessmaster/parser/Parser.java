@@ -12,6 +12,7 @@ import chessmaster.commands.RulesCommand;
 import chessmaster.commands.ShowCommand;
 import chessmaster.commands.ShowMovesCommand;
 import chessmaster.commands.StepbackCommand;
+import chessmaster.commands.CapturedCommand;
 import chessmaster.exceptions.MoveOpponentPieceException;
 import chessmaster.exceptions.NullPieceException;
 import chessmaster.exceptions.ParseColorException;
@@ -176,6 +177,8 @@ public class Parser {
             return new HistoryCommand();
         case StepbackCommand.STEPBACK_COMMAND_STRING:
             return new StepbackCommand(payload);
+        case CapturedCommand.CAPTURED_COMMAND_STRING:
+            return new CapturedCommand();
         default:
             return new InvalidCommand();
         }
